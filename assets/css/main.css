@@ -180,6 +180,14 @@ span.maintitle
     width: 875px;
 }
 
+#page-content img
+{
+    padding-top: 2em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
 .non-commercial-notice
 {
     border: 2px solid #039;
