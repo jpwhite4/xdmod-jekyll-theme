@@ -47,10 +47,49 @@
         {% if page.menu_markdown %}
             {% capture menu_markdown %}{% include {{page.menu_markdown}} %}{% endcapture %}
             {{ menu_markdown | markdownify }}
+        {% else %}
+            <div class="page-menu-toc">
+            {% if site.data.toc.toc[0] %}
+              {% for item in site.data.toc.toc %}
+                <h2>{{ item.title }}</h2>
+                  {% if item.subfolderitems[0] %}
+                    <ul>
+                      {% for entry in item.subfolderitems %}
+                          <li {% if entry.url == page.url %}class="active"{% endif %}><a href="{{ entry.url }}">{{ entry.page }}</a></li>
+                            {% if entry.subsubfolderitems[0] %}
+                              <ul>
+                              {% for subentry in entry.subsubfolderitems %}
+                                  <li class="{% if subentry.url == page.url %}active{% endif %}"><a href="{{ subentry.url }}">{{ subentry.page }}</a></li>
+                              {% endfor %}
+                              </ul>
+                            {% endif %}
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endfor %}
+            {% endif %}
+            </div>
         {% endif %}
       </div>
       <div id="page-content">
-        <h1>{{ page.title }}</h1>
+          {% if page.title %}
+            <h1>{{ page.title }}</h1>
+          {% else %}
+              {% if site.data.toc.toc[0] %}
+                {% for item in site.data.toc.toc %}
+                    {% if item.subfolderitems[0] %}
+                        {% for entry in item.subfolderitems %}
+                            {% if entry.url == page.url %} <h1> {{ item.title }} &rarr; {{ entry.page }} </h1> {% endif %}
+                               {% if entry.subsubfolderitems[0] %}
+                                   {% for subentry in entry.subsubfolderitems %}
+                                      {% if subentry.url == page.url %} <h1>{{ item.title }} &rarr; {{ entry.page }} &rarr; {{ subentry.page }} </h1>{% endif %}
+                                   {% endfor %}
+                              {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+              {% endif %}
+          {% endif %}
         {{ content }}
       </div>
       <div class="clear"></div>

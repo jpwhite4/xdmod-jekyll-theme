@@ -120,6 +120,7 @@ span.maintitle
     font-weight: bold;
     font-size: 3em;
     margin-left: 1ex;
+    vertical-align: top;
 }
 
 .clear
@@ -142,8 +143,9 @@ span.maintitle
 
 #page-header img
 {
-    margin: 10px;
-    margin-top: 28px;
+    display: inline-block;
+    margin: 1ex 0 0 1ex;
+    height: 3em;
 }
 
 #page-footer
@@ -184,4 +186,34 @@ span.maintitle
 {
     border: 2px solid #039;
     padding: 10px;
+}
+
+.page-menu-toc h2
+{
+    margin: 0 0 0.3em 0;
+}
+
+.page-menu-toc ul
+{
+    margin: 0;
+    margin-bottom: 1em;
+    padding: 0;
+    list-style-position: inside;
+    display: block;
+    line-height:140%;
+}
+
+.page-menu-toc ul li{
+    padding-left: 1ex;
+}
+
+.page-menu-toc li.active
+{
+    background-color: #039;
+}
+
+.page-menu-toc li.active a
+{
+    text-decoration: none;
+    color: white;
 }
