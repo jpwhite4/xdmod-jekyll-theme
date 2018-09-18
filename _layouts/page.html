@@ -58,6 +58,13 @@
                           <li {% if entry.url == page.url %}class="active"{% endif %}><a href="{{ entry.url }}">{{ entry.page }}</a></li>
                             {% if entry.subsubfolderitems[0] %}
                               <ul>
+                              <!-- BEGIN DEBUG
+                                  
+                                  {{ subentry.page }}
+                                  {{ subentry.url }}
+                                  {{ page.url }}
+                                  {{ site.baseurl }}
+                              -->
                               {% for subentry in entry.subsubfolderitems %}
                                  <li class="{% if subentry.url == page.url %}active{% endif %}"><a href="{{ site.baseurl }}/{{ subentry.url }}">{{ subentry.page }}</a></li>
                               {% endfor %}
