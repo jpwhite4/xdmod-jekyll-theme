@@ -120,7 +120,6 @@ span.maintitle
     font-weight: bold;
     font-size: 3em;
     margin-left: 1ex;
-    vertical-align: top;
 }
 
 .clear
@@ -143,9 +142,8 @@ span.maintitle
 
 #page-header img
 {
-    display: inline-block;
-    margin: 1ex 0 0 1ex;
-    height: 3em;
+    margin: 10px;
+    margin-top: 28px;
 }
 
 #page-footer
@@ -186,6 +184,18 @@ span.maintitle
 {
     border: 2px solid #039;
     padding: 10px;
+}
+
+div.compact img
+{
+    display: inline-block;
+    margin: 1ex 0 0 1ex !important;
+    height: 3em;
+}
+
+div.compact span
+{
+    vertical-align: top;
 }
 
 .page-menu-toc h2

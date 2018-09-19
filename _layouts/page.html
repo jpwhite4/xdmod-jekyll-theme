@@ -1,8 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+{% if page.tocversion %}
+    {% capture doc_path %}
+        {% if site.data[page.tocversion].toc[0] %}
+            {% for item in site.data[page.tocversion].toc %}
+                {% if item.subfolderitems[0] %}
+                    {% for entry in item.subfolderitems %}
+                        {% if entry.url == page.url %} {{ item.title }} &rarr; {{ entry.page }} {% endif %}
+                        {% if entry.subsubfolderitems[0] %}
+                            {% for subentry in entry.subsubfolderitems %}
+                                {% if subentry.url == page.url %} {{ item.title }} &rarr; {{ entry.page }} &rarr; {{ subentry.page }} {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endcapture %}
+    {% assign doc_path = doc_path | strip %}
+    {% capture table_of_contents %}
+        {% if site.data[page.tocversion].toc[0] %}
+            {% for item in site.data[page.tocversion].toc %}
+                <h2>{{ item.title }}</h2>
+                {% if item.subfolderitems[0] %}
+                    <ul>
+                    {% for entry in item.subfolderitems %}
+                            {% assign urlstart = entry.url | slice: 0, 4 %}
+                            <li {% if entry.url == page.url %}class="active"{% endif %}><a href="{% if urlstart != "http" %}{{ site.baseurl }}{% endif %}{{ entry.url }}">{{ entry.page }}</a></li>
+                            {% if entry.subsubfolderitems[0] %}
+                              <ul>
+                              {% for subentry in entry.subsubfolderitems %}
+                                    {% assign urlstart = subentry.url | slice: 0, 4 %}
+                                    <li class="{% if subentry.url == page.url %}active{% endif %}"><a href="{% if urlstart != "http" %}{{ site.baseurl }}{% endif %}{{ subentry.url }}">{{ subentry.page }}</a></li>
+                              {% endfor %}
+                              </ul>
+                            {% endif %}
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endcapture %}
+{% endif %}
 <head>
   <meta charset="utf-8">
-  <title>Open XDMoD{% if page.title != 'Open XDMoD' %} - {{ page.title }}{% endif %}</title>
+  <title>{% if site.xdmod_module_name %}{{site.xdmod_module_name}} {{doc_path}}{% else %}Open XDMoD{% if page.title != 'Open XDMoD' %} - {{ page.title }}{% endif %}{% endif %}</title>
   <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/favicon.ico" />
   <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}{{ site.theme_subdir }}/assets/css/main.css" />
   <script>
@@ -16,7 +58,7 @@
 </head>
 <body>
   <div id="page-container">
-    <div id="page-header">
+      <div id="page-header" {% if page.compact_header %}class="compact"{% endif %}>
       <a href="http://open.xdmod.org"><img src="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/xdmod_logo.png" alt="XDMoD" /></a>
       <span class="maintitle">{% if site.xdmod_module_name %}{{ site.xdmod_module_name }} Module{% else %}Open XDMoD{% endif %} {{page.version}}</span>
     </div>
@@ -26,6 +68,7 @@
     <div id="page-body">
       <div class="clear"></div>
       <div id="page-menu">
+          {% if table_of_contents %}<div class="page-menu-toc">{{ table_of_contents }}</div>{% endif %}
           {% if site.version_list %}
             {% if site.latest_version == page.version %}
                 <h2>Older versions</h2>
@@ -47,63 +90,10 @@
         {% if page.menu_markdown %}
             {% capture menu_markdown %}{% include {{page.menu_markdown}} %}{% endcapture %}
             {{ menu_markdown | markdownify }}
-        {% else %}
-            <div class="page-menu-toc">
-            {% if site.data[page.tocversion].toc[0] %}
-              {% for item in site.data[page.tocversion].toc %}
-                <h2>{{ item.title }}</h2>
-                  {% if item.subfolderitems[0] %}
-                    <ul>
-                      {% for entry in item.subfolderitems %}
-                              <!-- BEGIN DEBUG
-                                  
-                                  {{ entry.page }}
-                                  {{ entry.url }}
-                                  {{ page.url }}
-                                  {{ site.baseurl }}
-                              -->
-                          <li {% if entry.url == page.url %}class="active"{% endif %}><a href="{{ site.baseurl }}/{{ entry.url }}">{{ entry.page }}</a></li>
-                            {% if entry.subsubfolderitems[0] %}
-                              <ul>
-                              <!-- BEGIN DEBUG
-                                  
-                                  {{ subentry.page }}
-                                  {{ subentry.url }}
-                                  {{ page.url }}
-                                  {{ site.baseurl }}
-                              -->
-                              {% for subentry in entry.subsubfolderitems %}
-                                 <li class="{% if subentry.url == page.url %}active{% endif %}"><a href="{{ site.baseurl }}/{{ subentry.url }}">{{ subentry.page }}</a></li>
-                              {% endfor %}
-                              </ul>
-                            {% endif %}
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
-                {% endfor %}
-            {% endif %}
-            </div>
         {% endif %}
       </div>
       <div id="page-content">
-          {% if page.title %}
-            <h1>{{ page.title }}</h1>
-          {% else %}
-              {% if site.data[page.tocversion].toc[0] %}
-                {% for item in site.data[page.tocversion].toc %}
-                    {% if item.subfolderitems[0] %}
-                        {% for entry in item.subfolderitems %}
-                            {% if entry.url == page.url %} <h1> {{ item.title }} &rarr; {{ entry.page }} </h1> {% endif %}
-                               {% if entry.subsubfolderitems[0] %}
-                                   {% for subentry in entry.subsubfolderitems %}
-                                      {% if subentry.url == page.url %} <h1>{{ item.title }} &rarr; {{ entry.page }} &rarr; {{ subentry.page }} </h1>{% endif %}
-                                   {% endfor %}
-                              {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                  {% endfor %}
-              {% endif %}
-          {% endif %}
+        {% if doc_path %} <h1>{{ doc_path }}</h1> {% else %} <h1>{{ page.title }}</h1> {% endif %}
         {{ content }}
       </div>
       <div class="clear"></div>
