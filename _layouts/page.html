@@ -42,11 +42,12 @@
         {% endif %}
     {% endcapture %}
 {% endif %}
+{% capture style_sheet %}{% if page.style %}{{ page.style }}{% else %}main{% endif %}{% endcapture %}
 <head>
   <meta charset="utf-8">
   <title>{% if site.xdmod_module_name %}{{site.xdmod_module_name}} {{doc_path}}{% else %}Open XDMoD{% if page.title != 'Open XDMoD' %} - {{ page.title }}{% endif %}{% endif %}</title>
   <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/favicon.ico" />
-  <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}{{ site.theme_subdir }}/assets/css/main.css" />
+  <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}{{ site.theme_subdir }}/assets/css/{{style_sheet}}.css" />
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -58,7 +59,7 @@
 </head>
 <body>
   <div id="page-container">
-      <div id="page-header" {% if page.compact_header %}class="compact"{% endif %}>
+    <div id="page-header">
       <a href="http://open.xdmod.org"><img src="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/xdmod_logo.png" alt="XDMoD" /></a>
       <span class="maintitle">{% if site.xdmod_module_name %}{{ site.xdmod_module_name }} Module{% else %}Open XDMoD{% endif %} {{page.version}}</span>
     </div>
