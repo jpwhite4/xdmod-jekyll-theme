@@ -6,10 +6,10 @@
             {% for item in site.data[page.tocversion].toc %}
                 {% if item.subfolderitems[0] %}
                     {% for entry in item.subfolderitems %}
-                        {% if entry.url == page.url %} {{ item.title }} &rarr; {{ entry.page }} {% endif %}
+                        {% if entry.url == page.url %} <span>{{ item.title }}:</span><span>{{ entry.page }}</span> {% endif %}
                         {% if entry.subsubfolderitems[0] %}
                             {% for subentry in entry.subsubfolderitems %}
-                                {% if subentry.url == page.url %} {{ item.title }} &rarr; {{ entry.page }} &rarr; {{ subentry.page }} {% endif %}
+                                {% if subentry.url == page.url %} <span>{{ item.title }}:</span><a href="{{entry.url}}">{{ entry.page }}</a> <span>{{ subentry.page }}</span> {% endif %}
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
@@ -29,12 +29,23 @@
                             {% assign urlstart = entry.url | slice: 0, 4 %}
                             {% if entry.subsubfolderitems[0] %}
 			      {%- assign sub_menu_counter = sub_menu_counter | plus: 1 -%}
-			      <li class="has-submenu">
-				      <input type="checkbox" id="sub-toggle-{{ sub_menu_counter }}" class="submenu-check">
+
+                              {%- assign sub_menu_active = 0 -%}
+                              {% if entry.url == page.url %}
+                                  {% assign sub_menu_active = 1 -%}
+                              {% endif %}
+                              {% for subentry in entry.subsubfolderitems %}
+                                  {% if subentry.url == page.url %}
+                                      {% assign sub_menu_active = 1 -%}
+                                  {% endif %}
+                              {% endfor %}
+
+			      <li class="has-submenu {% if entry.url == page.url %}active{% endif %}">
+				      <input type="checkbox" id="sub-toggle-{{ sub_menu_counter }}" class="submenu-check" {% if sub_menu_active == 1 %}checked{% endif %}>
 				      <label for="sub-toggle-{{ sub_menu_counter }}" class="submenu-label">
                             <a href="{% if urlstart != "http" %}{{ site.baseurl }}{% endif %}{{ entry.url }}" class="link-item">{{ entry.page }}</a>
-        <span class="arrow-icon"></span>
-      </label>
+                            <span class="arrow-icon"></span>
+                      </label>
                               <ul class="nested-menu">
                               {% for subentry in entry.subsubfolderitems %}
                                     {% assign urlstart = subentry.url | slice: 0, 4 %}
@@ -52,7 +63,7 @@
         {% endif %}
     {% endcapture %}
 {% endif %}
-{% capture style_sheet %}{% if page.style %}{{ page.style }}{% else %}main{% endif %}{% endcapture %}
+{% capture style_sheet %}{% if page.style %}{{ page.style }}{% else %}dappercrayon{% endif %}{% endcapture %}
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -78,22 +89,56 @@
 
 <!-- Floating Side Menu Drawer -->
 <nav class="side-menu">
-	  <div class="page-menu-header">
-      <a href="https://www.nsf.gov"><img src="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/NSF_4-Color_bitmap_Logo.png" alt="National Science Foundation Logo" class='nsflogo' /></a>
-      <a href="http://open.xdmod.org"><img src="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/xdmod_logo.png" alt="XDMoD Logo" class='xdmodlogo' height="59px" /></a>
-	  </div>
-       
-	<!-- Search Input -->
-	<div class="search-container">
-		<input type="text" id="search-input" placeholder="🔍 Search..." size="25" autocomplete="off">
-	</div>
+    <div class="page-menu-header">
+        <a href="https://www.nsf.gov"><img src="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/NSF_4-Color_bitmap_Logo.png" alt="National Science Foundation Logo" class='nsflogo' /></a>
+        <a href="http://open.xdmod.org"><img src="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/xdmod_logo.png" alt="XDMoD Logo" class='xdmodlogo' height="59px" /></a>
+    </div>
 
-            {% if table_of_contents %}
-              {{ table_of_contents }}
-            {% elsif page.menu_markdown %}
-              {% capture menu_markdown %}{% include {{page.menu_markdown}} %}{% endcapture %}
-              {{ menu_markdown | markdownify }}
+<div class="version-dropdown">
+  <!-- The hidden checkbox controls the state -->
+  <input type="checkbox" id="dropdown-toggle" class="dropdown-checkbox">
+
+  <!-- The label acts as the clickable button -->
+  <label for="dropdown-toggle" class="dropdown-btn">
+  {% if site.latest_version == page.version %}
+      Version {{ page.version }} (latest)
+  {% else %}
+      Version {{ page.version }} (out of date)
+  {% endif %}
+  </label>
+
+  <!-- The actual dropdown menu -->
+  <ul class="dropdown-menu">
+
+            {% if site.latest_version == page.version %}
+                {% if site.version_list.size > 1 %}
+                    <li>Older versions</li>
+                {% endif %}
+            {% else %}
+                <li>Other versions</li>
             {% endif %}
+            {% for item in site.version_list %}
+                {% if item != page.version %}
+                    <li><a href="{{ site.baseurl }}/{{ item }}">{{ item }}
+                        {% if item == site.latest_version %}
+                        (latest)
+                        {% endif %}
+                    </a></li>
+                {% endif %}
+            {% endfor %}
+         {% if site.unsupported_version_list and site.unsupported_version_list.size != 0 %}
+                <li>Unsupported versions</li>
+            {% for item in site.unsupported_version_list %}
+                {% if item != page.version %}
+                    <li><a href="{{ site.baseurl }}/{{ item }}">{{ item }}</a></li>
+                {% endif %}
+            {% endfor %}
+         {% endif %}
+
+  </ul>
+</div>
+
+    {{ table_of_contents }}
 </nav>
 
 <!-- EVERYTHING ELSE GOES INSIDE THIS WRAPPER -->
@@ -110,17 +155,17 @@
         <span class="hamburger-line"></span>
       </label>
     </div>
+
+      <nav class="breadcrumb">
+        {{ doc_path }}
+      </nav>
+
   </header>
 
   <!-- Page Main Content Area -->
   <main class="main-body">
-        {% if doc_path %} <h1>{{ doc_path }}</h1> {% else %} <h1>{{ page.title }}</h1> {% endif %}
+        <h1>{{ page.title }}</h1>
         {{ content }}
-
-
-	<!-- Container for Dynamic Search Results -->
-	<ul id="search-results"></ul>
-
   </main>
 
   <!-- Semi-transparent overlay to close menu when clicking outside -->
