@@ -1,0 +1,355 @@
+/* Base Resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Lato, Arial, Helvetica, sans-serif;
+  background-color: white;
+}
+
+/* Hide checkbox hack mechanism */
+.nav-toggle-check {
+  display: none;
+}
+
+/* Header Styles */
+.site-header {
+  background-color: #039;
+  color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-menu-header {
+	margin-left: 6px;
+   margin-bottom: 20px;
+   margin-top: 20px;
+   display: flex;
+   align-items: center;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Floating Side Menu (Desktop View) */
+.side-menu {
+  position: fixed;
+  top: 60px; /* Sits exactly under the header */
+  left: 0;
+  width: 260px;
+  height: calc(100vh - 60px);
+  background-color: #eeeeee;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  z-index: 900;
+  transition: transform 0.3s ease-in-out;
+
+  /* 1. Standard scroll activation */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  /* 2. Hide scrollbar for Firefox */
+  scrollbar-width: none;
+
+  /* 3. Hide scrollbar for IE and Edge */
+  -ms-overflow-style: none;
+}
+
+/* 4. Hide scrollbar for Chrome, Safari, and Opera (Blink engines) */
+.side-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.menu-links {
+  list-style: none;
+  padding: 20px 0;
+}
+
+.link-item {
+  display: block;
+  padding: 5px 15px;
+  color: #222222;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.link-item:hover {
+  background-color: white;
+  color: #007bff;
+  padding-left: 30px; /* Slight push effect on hover */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Hamburger UI Switch */
+.hamburger-button {
+  display: none; /* Hidden on desktop, side menu stays visible */
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.hamburger-line {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Mobile & Tablet Specific Layout */
+@media (max-width: 992px) {
+  .hamburger-button {
+    display: flex; /* Show hamburger button */
+  }
+
+  /* Slide menu completely out of view off-screen left */
+  .side-menu {
+    top: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    z-index: 2000; /* Place over header when open */
+    box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Dimmed background overlay */
+  .menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  /* TOGGLE STATES (When Checked) */
+
+  /* 1. Slide side menu into view */
+  .nav-toggle-check:checked ~ .side-menu {
+    transform: translateX(0);
+  }
+
+  /* 2. Fade in background dark overlay */
+  .nav-toggle-check:checked ~ .menu-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* 3. Animate Hamburger into X mark */
+  .nav-toggle-check:checked ~ .site-header .hamburger-line:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+  }
+  .nav-toggle-check:checked ~ .site-header .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  .nav-toggle-check:checked ~ .site-header .hamburger-line:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
+  }
+}
+
+/* Base Page setups to prevent unwanted horizontal scrolling bars */
+html, body {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
+
+/* The Wrapper covering header, text, images, and footer */
+.content-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 60px; /* Prevents body content from hiding under header */
+  transition: transform 0.3s ease-in-out; /* Match the side-menu timing exactly */
+}
+
+/* Base style adjustment for your floating side menu */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px; /* The exact amount we will shift the content wrapper */
+  height: 100vh;
+  background-color: #eeeeee;
+  z-index: 2000;
+  transform: translateX(-100%); /* Start completely hidden on left */
+  transition: transform 0.3s ease-in-out;
+}
+
+.side-menu h2 {
+  font-size: 16px;	
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+/* Main Body copy layout spacing */
+.main-body {
+  padding: 40px 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Desktop behavior layout configuration */
+@media (min-width: 993px) {
+  /* On large screens, push content automatically so menu is always visible */
+  .content-wrapper {
+    transform: translateX(260px);
+    width: calc(100% - 260px);
+  }
+  .side-menu {
+    transform: translateX(0); /* Lock menu into display view */
+  }
+  .hamburger-button {
+    display: none; /* Hide toggle switch entirely on desktop layout */
+  }
+}
+
+/* Mobile & Tablet Specific Push Triggers */
+@media (max-width: 992px) {
+  .hamburger-button {
+    display: flex;
+  }
+
+  /* 1. Slide side menu into view frame from offscreen */
+  .nav-toggle-check:checked ~ .side-menu {
+    transform: translateX(0);
+  }
+
+  /* 2. THE PUSH TRIGGER: Shift everything inside the wrapper 260px right */
+  .nav-toggle-check:checked ~ .content-wrapper {
+    transform: translateX(260px);
+  }
+
+  /* Dimmed background overlay layout setup */
+  .menu-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Fade overlay layer in over body when active to allow quick click-to-close */
+  .nav-toggle-check:checked ~ .content-wrapper .menu-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+
+/* Base structural reset for nested tracking lists */
+.has-submenu {
+  position: relative;
+  display: block;
+}
+
+/* Hide the invisible functional checkbox toggle switches */
+.submenu-check {
+  display: none;
+}
+
+/* Layout alignment for the primary expandable text labels */
+.submenu-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Built-in pure CSS directional indicator arrow */
+.arrow-icon {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid #666666;
+  border-bottom: 2px solid #666666;
+  transform: rotate(45deg); /* Points downwards by default */
+  transition: transform 0.2s ease-in-out;
+  margin-right: 5px;
+}
+
+/* Submenu container (Hidden off-screen/collapsed completely by default) */
+.nested-menu {
+  list-style: none;
+  background-color: #f9f9f9;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease-out; /* Smooth expansion motion */
+}
+
+/* Visual indentation styling layout for secondary sub-links */
+.nested-link {
+  display: block;
+  padding: 12px 25px 12px 40px; /* Pushed right to indicate nesting depth */
+  color: #555555;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.nested-link:hover {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
+
+/* OPEN ACTIVE STATE LOGIC MECHANISMS */
+
+/* 1. Expand the max height calculation block when checkbox check registers */
+.submenu-check:checked ~ .nested-menu {
+  max-height: 300px; /* Big enough value to accommodate links safely */
+}
+
+/* 2. Rotate arrow to point upwards when sub-menu grid rolls open */
+.submenu-check:checked ~ .submenu-label .arrow-icon {
+  transform: rotate(-135deg);
+}
+
+.search-container {
+   margin: 14px;
+   display: flex;
+   align-items: center;
+}
+
+.search-container input {
+	padding: 6px;              /* Space inside the input */
+        border: 2px solid #ccc;     /* Border color and thickness */
+        border-radius: 12px;        /* Rounds the corners */
+        outline: none;              /* Removes default focus outline */
+        font-size: 16px;            /* Text size */
+        transition: border-color 0.3s ease; /* Smooth hover/focus effect */
+}
