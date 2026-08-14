@@ -69,6 +69,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if site.xdmod_module_name %}{{site.xdmod_module_name}} {{doc_path}}{% else %}Open XDMoD{% if page.title != 'Open XDMoD' %} - {{ page.title }}{% endif %}{% endif %}</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
   <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/favicon.ico" />
   <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}{{ site.theme_subdir }}/assets/css/{{style_sheet}}.css" />
   {% unless page.version==site.latest_version %} <link rel="canonical" href="{{site.url}}/{{site.latest_version}}/{{page.name | remove: '.md' }}.html" /> {% endunless %}
@@ -84,92 +85,133 @@
   </script>
 </head>
 <body>
-	<!-- Hidden checkbox to control mobile toggle state -->
-<input type="checkbox" id="nav-toggle" class="nav-toggle-check">
+    <div>
+        <!-- Hidden checkbox to control mobile toggle state -->
+        <input type="checkbox" id="nav-toggle" class="nav-toggle-check">
 
-<!-- Floating Side Menu Drawer -->
-<nav class="side-menu">
-    <div class="page-menu-header">
-        <a href="https://www.nsf.gov"><img src="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/NSF_4-Color_bitmap_Logo.png" alt="National Science Foundation Logo" class='nsflogo' /></a>
-        <a href="http://open.xdmod.org"><img src="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/xdmod_logo.png" alt="XDMoD Logo" class='xdmodlogo' height="59px" /></a>
-    </div>
+        <!-- Floating Side Menu Drawer -->
+        <nav class="side-menu">
+            <div class="page-menu-header">
+                <a href="https://www.nsf.gov"><img
+                        src="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/NSF_4-Color_bitmap_Logo.png"
+                        alt="National Science Foundation Logo" class='nsflogo' /></a>
+                <a href="http://open.xdmod.org"><img
+                        src="{{ site.baseurl }}{{ site.theme_subdir }}/assets/images/xdmod_logo.png" alt="XDMoD Logo"
+                        class='xdmodlogo' height="59px" /></a>
+            </div>
 
-<div class="version-dropdown">
-  <!-- The hidden checkbox controls the state -->
-  <input type="checkbox" id="dropdown-toggle" class="dropdown-checkbox">
+            <div class="version-dropdown">
+                <!-- The hidden checkbox controls the state -->
+                <input type="checkbox" id="dropdown-toggle" class="dropdown-checkbox">
+                <!-- The label acts as the clickable button -->
+                <label for="dropdown-toggle" class="dropdown-btn">
+                    {% if site.latest_version == page.version %}
+                        Version {{ page.version }} (latest)
+                    {% else %}
+                        Version {{ page.version }} (out of date)
+                    {% endif %}
+                </label>
 
-  <!-- The label acts as the clickable button -->
-  <label for="dropdown-toggle" class="dropdown-btn">
-  {% if site.latest_version == page.version %}
-      Version {{ page.version }} (latest)
-  {% else %}
-      Version {{ page.version }} (out of date)
-  {% endif %}
-  </label>
+                <!-- The actual dropdown menu -->
+                <ul class="dropdown-menu">
 
-  <!-- The actual dropdown menu -->
-  <ul class="dropdown-menu">
-
-            {% if site.latest_version == page.version %}
-                {% if site.version_list.size > 1 %}
-                    <li>Older versions</li>
-                {% endif %}
-            {% else %}
-                <li>Other versions</li>
-            {% endif %}
-            {% for item in site.version_list %}
-                {% if item != page.version %}
-                    <li><a href="{{ site.baseurl }}/{{ item }}">{{ item }}
-                        {% if item == site.latest_version %}
-                        (latest)
+                    {% if site.latest_version == page.version %}
+                        {% if site.version_list.size > 1 %}
+                            <li>Older versions</li>
                         {% endif %}
-                    </a></li>
-                {% endif %}
-            {% endfor %}
-         {% if site.unsupported_version_list and site.unsupported_version_list.size != 0 %}
-                <li>Unsupported versions</li>
-            {% for item in site.unsupported_version_list %}
-                {% if item != page.version %}
-                    <li><a href="{{ site.baseurl }}/{{ item }}">{{ item }}</a></li>
-                {% endif %}
-            {% endfor %}
-         {% endif %}
+                    {% else %}
+                        <li>Other versions</li>
+                    {% endif %}
+                    {% for item in site.version_list %}
+                        {% if item != page.version %}
+                            <li><a href="{{ site.baseurl }}/{{ item }}">{{ item }}
+                            {% if item == site.latest_version %}
+                                (latest)
+                            {% endif %}
+                            </a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if site.unsupported_version_list and site.unsupported_version_list.size != 0 %}
+                        <li>Unsupported versions</li>
+                        {% for item in site.unsupported_version_list %}
+                            {% if item != page.version %}
+                                <li><a href="{{ site.baseurl }}/{{ item }}" class="link-item">{{ item }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
 
-  </ul>
-</div>
+                </ul>
+            </div>
 
-    {{ table_of_contents }}
-</nav>
+            {{ table_of_contents }}
+        </nav>
 
-<!-- EVERYTHING ELSE GOES INSIDE THIS WRAPPER -->
-<div class="content-wrapper">
-  <!-- Main Navigation Header -->
-  <header class="site-header">
-    <div class="header-container">
-	    <a href="#" class="logo">{% if site.xdmod_module_name %}{{ site.xdmod_module_name }} Module{% else %}Open XDMoD{% endif %} {{page.version}}</a>
+        <div class="content-wrapper">
 
-      <!-- Animated Hamburger Button -->
-      <label for="nav-toggle" class="hamburger-button">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </label>
+            <header class="site-header">
+                <div class="header-container">
+                    <a href="#" class="logo">{% if site.xdmod_module_name %}{{ site.xdmod_module_name }} Module{% else %}Open
+                        XDMoD{% endif %} {{page.version}}</a>
+
+                    <label for="search-modal-toggle" class="search-button">
+                        <span class="material-symbols-outlined">search</span> Search
+                    </label>
+
+                    <!-- Animated Hamburger Button - only shown on narrow pages via css selector -->
+                    <label for="nav-toggle" class="hamburger-button">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </label>
+                </div>
+
+                <nav class="breadcrumb">
+                    {{ doc_path }}
+                </nav>
+            </header>
+
+            <!-- Page Main Content Area -->
+            <main class="main-body">
+                <h1>{{ page.title }}</h1>
+                {{ content }}
+            </main>
+
+            <!-- Semi-transparent overlay to close menu when clicking outside -->
+            <label for="nav-toggle" class="menu-overlay"></label>
+
+        </div>
+
+        <!-- Hidden checkbox that acts as the search modal state switch -->
+        <input type="checkbox" id="search-modal-toggle" class="search-modal-check">
+
+        <!-- The Search Modal Overlay Wrapper -->
+        <div class="search-modal-overlay">
+            <!-- Close target label clicking anywhere outside the white box -->
+            <label for="search-modal-toggle" class="modal-close-backdrop"></label>
+
+            <!-- Search UI Container -->
+            <div class="search-modal-container">
+                <!-- Header row inside modal -->
+                <div class="search-modal-header">
+                    <h3>Search the {{page.version}} release documentation.</h3>
+                    <label for="search-modal-toggle" class="close-modal-btn">&times;</label>
+                </div>
+
+                <!-- Input Form Field -->
+                <div class="search-input-wrapper">
+                    <input type="search" id="search-input" placeholder="Type your search query..." class="search-field"
+                        autofocus>
+                </div>
+
+                <!-- Live/Recent Search Results Block -->
+                <div class="search-results-wrapper">
+                    <span class="results-heading">Results</span>
+                    <output id="search-results" class="results-list">
+                        <!-- no results content -->
+                    </output>
+                </div>
+            </div>
+        </div>
     </div>
-
-      <nav class="breadcrumb">
-        {{ doc_path }}
-      </nav>
-
-  </header>
-
-  <!-- Page Main Content Area -->
-  <main class="main-body">
-        <h1>{{ page.title }}</h1>
-        {{ content }}
-  </main>
-
-  <!-- Semi-transparent overlay to close menu when clicking outside -->
-  <label for="nav-toggle" class="menu-overlay"></label>
-</div>
 </body>
 </html>
