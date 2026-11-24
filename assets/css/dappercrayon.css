@@ -93,6 +93,8 @@ body {
   font-size: 16px;
   font-weight: 500;
   transition: all 0.2s ease;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .active {
@@ -104,7 +106,6 @@ body {
   color: #007bff;
   padding-left: 30px; /* Slight push effect on hover */
   white-space: nowrap;
-  overflow: hidden;
 }
 
 /* Hamburger UI Switch */
@@ -222,7 +223,7 @@ html, body {
 
 /* Main Body copy layout spacing */
 .main-body {
-  padding: 40px 20px;
+  padding: 20px;
   max-width: 700px;
   margin-left: 20px;
 }
@@ -407,6 +408,7 @@ html, body {
 .main-body h1 {
     font-size: 2em;
     margin: 0 0 0.7rem 0;
+    padding-top: 20px;
 }
 
 .main-body h2 {
@@ -1022,4 +1024,12 @@ li code {
   font-weight: bold;
   text-transform: uppercase;
   word-spacing: 5px;
+}
+
+div .warning {
+  background-color: rgba(255, 229, 100, .25);
+  padding: 10px;
+  border-left: 4px solid #e7c000;
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
