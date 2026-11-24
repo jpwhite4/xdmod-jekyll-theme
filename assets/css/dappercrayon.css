@@ -29,9 +29,8 @@ body {
 }
 
 .header-container {
-  max-width: 1200px;
+  max-width: 700px;
   height: 70px;
-  margin: 0 auto;
   padding: 0 20px;
   display: flex;
   justify-content: space-between;
@@ -180,6 +179,10 @@ body {
   .nav-toggle-check:checked ~ .site-header .hamburger-line:nth-child(3) {
     transform: translateY(-7.5px) rotate(-45deg);
   }
+
+  .header-container {
+    max-width: 992px;
+  }
 }
 
 /* Base Page setups to prevent unwanted horizontal scrolling bars */
@@ -221,7 +224,7 @@ html, body {
 .main-body {
   padding: 40px 20px;
   max-width: 700px;
-  margin: 0 auto;
+  margin-left: 20px;
 }
 
 /* Desktop behavior layout configuration */
@@ -273,6 +276,10 @@ html, body {
   .nav-toggle-check:checked ~ .content-wrapper .menu-overlay {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  .main-body {
+    margin: 0 auto;
   }
 }
 
@@ -382,12 +389,12 @@ html, body {
   content: "›";
   position: absolute;
   right: 0;
-  color: #6c757d;
+  color: #6B6B6B;
 }
 
 /* Last item (current page) */
 .breadcrumb span {
-  color: #6c757d;
+  color: #6B6B6B;
   font-weight: bold;
   margin-right: 8px;
 }
@@ -418,11 +425,6 @@ html, body {
     margin-block-start: 0.5rem;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-}
-
-.main-body p + p {
-    text-indent: 1.5rem;
-    margin-block-start: 0;
 }
 
 .main-body ul {
@@ -811,7 +813,7 @@ li code {
 
 /* Style trigger and hidden menu */
 .dropdown-btn {
-    background-color: #3498db;
+    background-color: #0049DB;
     color: white;
     padding: 6px 10px 6px 10px;
     font-size: 14px;
@@ -938,7 +940,7 @@ li code {
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
-  color: #999999;
+  color: #757575;
   letter-spacing: 0.5px;
   margin-bottom: 8px;
 }
@@ -988,4 +990,36 @@ li code {
 .search-button {
   display: flex;
   align-items: center;
+}
+
+.block-warning {
+  background-color: rgba(255, 229, 100, .25);
+  padding: 10px;
+  border-left: 4px solid #e7c000;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.block-warning::before {
+  content: "\26A0  Warning";          /* Unicode Warning Triangle */
+  font-weight: bold;
+  color: #e7c000;
+  text-transform: uppercase;
+  word-spacing: 5px;
+}
+
+.block-tip {
+  background-color: #E2F5EC;
+  padding: 10px;
+  border-left: 4px solid #297554;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.block-tip::before {
+  content: "\272a  Tip";
+  color: #297554;
+  font-weight: bold;
+  text-transform: uppercase;
+  word-spacing: 5px;
 }
